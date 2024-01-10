@@ -1,28 +1,73 @@
-
 import styled from "styled-components";
 import Navbar from "../component/navbar";
-import { useEffect } from "react";
+import {useState } from "react";
+import axios from 'axios';
 
+import { useNavigate } from 'react-router-dom';
 
 function Register(props) {
 
+  const Navigate = useNavigate()
+
+  const [data, setData] = useState({
+    email: '',
+    nama: '',
+    no_telpon: '',
+    password: '',
+    alamat: ''
+  });
 
 
+  const handlerSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      console.log("Pengiriman data");
+      console.log(data);
+
+      await axios.post("http://127.0.0.1:4000/createData", data);
+      console.log("Data Berhasil dikirim");
+      // Munculkan modal sukses atau tampilkan pesan sukses
+
+      
+    } catch (error) {
+      console.error(error);
+      // Munculkan modal error atau tampilkan pesan error dari backend
+    }
+  };
+
+  const handlerChange = (event) => {
+    const { name, value } = event.target;
+    setData({
+      ...data,
+      [name]: value
+    });
+  };
+
+  const closeModal = () => {
+    Navigate('/login')
+    
+  };
 
   return (
     <Wrapper>
       <Navbar />
-      <Form>
-        <Input type="text" placeholder="Masukan username" />
-        <Input type="text"  placeholder="Masukan Nama" />
-        <Input type="text" placeholder="Masukan No Telpon" />
-        <Input type="password"  placeholder="Masukan Password" />
-        <Input type="password" placeholder="Masukan Konfirmasi Password" />
-        <Button>Buat</Button>
+      <Form onSubmit={handlerSubmit}>
+        <Input id="username" type="text" placeholder="Masukan Email" value={data.email} onChange={handlerChange} name="email" />
+        <Input id="nama" type="text" placeholder="Masukan Nama" value={data.nama} onChange={handlerChange} name="nama" />
+        <Input id="no_telpon" type="text" placeholder="Masukan No Telpon" value={data.no_telpon} onChange={handlerChange} name="no_telpon" />
+        <Input id="password" type="password" placeholder="Masukan Password" value={data.password} onChange={handlerChange} name="password" />
+        <Input id="konfirmasi_pass" type="text" placeholder="Masukan Alamat" value={data.alamat} onChange={handlerChange} name="alamat" />
+        <Button type="submit">Buat</Button>
       </Form>
+      
+    
     </Wrapper>
   );
 }
+
+
+// Tambahkan gaya CSS untuk modal di sini
+
 
 const Wrapper = styled.div`
   justify-content: center;

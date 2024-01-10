@@ -5,9 +5,9 @@ import styled from "styled-components"
 
 
 const Navbars = styled.div`
-  height:200px;
+  height:50px;
   width:100%;
-  position:relative;
+  position:flex;
   background:yellow;
 `
 

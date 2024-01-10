@@ -1,21 +1,58 @@
 import * as React from "react";
 import { NavLink } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import styled from "styled-components";
 import Navbar from "../component/navbar";
-
+import axios from 'axios'
 function Login(props) {
+
+  const [data, setData] = React.useState({
+    username:'',
+    password:'',
+ 
+  })
+
+  //handler untuk submit data
+
+  const handlerSubmit=(e)=>{
+
+    e.preventDefault()
+    console.log("Pengiriman data")
+    //logik axios untuk pengiriman daa
+    console.log(data)
+
+    axios.post("Backend URL", data)
+    .then(()=>{
+      console.log("Berhasil Login")
+      
+  
+    })
+    .catch((error)=>{
+      console.eror(error)
+    })
+  }
+
+  const handlerChange = (event) => {
+    const { name, value } = event.target;
+    setData({
+      ...data,
+      [name]: value
+    });
+  };
+
+
   return (
     <Wrapper>
       <Navbar />
-      <Form>
+      <Form onSubmit={handlerSubmit}>
         <Title>SILAHKAN MASUK</Title>
-        <Input placeholder="Masukan username" />
-        <Input placeholder="Masukan Password" />
+        <Input id="username" name="username" type="text" onChange={handlerChange} value={data.username}  placeholder="Masukan username" />
+        <Input id="password" name="password" type="password" onChange={handlerChange} value={data.password}  placeholder="Masukan Password" />
         <ButtonContainer>
           <NavLink to={"/register"} >Register </NavLink>
-          <SubmitButton>
+          <Button type="submit">
             MASUK
-          </SubmitButton>
+          </Button>
         </ButtonContainer>
       </Form>
     </Wrapper>
@@ -95,25 +132,18 @@ const RegisterLink = styled.div`
   }
 `;
 
-const SubmitButton = styled.div`
-  display: flex;
-  flex-direction: column;
+const Button = styled.button`
   color: #000;
-  position: relative;
   white-space: nowrap;
-  fill: #6fbfc4;
-  stroke-width: 1px;
-  stroke: #000;
-  overflow: hidden;
-  align-self: stretch;
-  aspect-ratio: 2.3823529411764706;
-  justify-content: center;
-  padding: 12px 16px;
-  font: 100 15px Inter, sans-serif;
-  background-color: #6fbfc4; /* Tambahkan warna latar belakang sesuai kebutuhan */
-  cursor: pointer; /* Tambahkan cursor pointer untuk tombol */
+  font: 700 15px Inter, sans-serif;
+  background-color: #78d9df;
+  border: 1px solid #000;
+  border-radius: 10px;
+  padding: 12px 26px;
+  margin: 21px 13px 22px 0;
   @media (max-width: 991px) {
-    white-space: initial;
+    max-width: 100%;
+    margin-right: 10px;
   }
 `;
 
